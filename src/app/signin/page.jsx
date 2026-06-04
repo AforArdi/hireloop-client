@@ -1,14 +1,28 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Button, Form, Fieldset, TextField, Label, Input, Surface, Description } from "@heroui/react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function SignInPage() {
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-    console.log("Sign In Data:", data);
+    // console.log("Sign In Data:", data);
+    const {email, password} = data;
+    const { data:res, error } = await authClient.signIn.email({
+      email,
+      password,
+      callbackURL: "/",
+    })
+    if(res){
+      toast.success("Sign in successful! Redirecting...");
+    }
+    if(error){
+      toast.error(`${error.message}` || "Sign in failed. Please try again.");
+    }
   };
 
   return (
@@ -20,7 +34,7 @@ export default function SignInPage() {
               <Fieldset.Legend className="text-2xl font-bold text-white mb-2">Welcome Back</Fieldset.Legend>
               <Description className="text-gray-400">Sign in to continue to HireLoop.</Description>
             </div>
-            
+
             <Fieldset.Group className="flex flex-col gap-5">
               <TextField isRequired name="email" type="email">
                 <Label className="text-sm font-medium text-gray-300 mb-1">Email Address</Label>

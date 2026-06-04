@@ -1,24 +1,35 @@
 "use client";
 import { useState } from "react";
-import { Link, Button } from "@heroui/react";
+import { Link, Button, Avatar } from "@heroui/react";
+import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     data: session,
     isPending, //loading state
     error, //error object
     refetch //refetch the session
-  } = authClient.useSession()
+  } = authClient.useSession();
 
   const user = session?.user;
 
-  const handleSignOut = async()=>{
+  const handleSignOut = async () => {
     await authClient.signOut();
-  }
+    toast.error("You've been signed out.");
+    router.push("/signin");
+  };
 
-  // console.log(user);
+  // Helper function to get initials for the Avatar Fallback
+  const getInitials = (name) => {
+    if (!name) return "U";
+    return name.charAt(0).toUpperCase();
+  };
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-[#0a0a0a]/90 backdrop-blur-lg border-b border-white/5">
@@ -43,7 +54,14 @@ export default function Navbar() {
           </button>
           <div className="flex items-center gap-3">
             <Link href="/">
-              <img src="/images/logo.png" alt="HireLoop" className="h-8 w-auto object-contain" />
+              <Image
+                src="/images/logo.png"
+                alt="HireLoop"
+                width={120}
+                height={32}
+                className="h-8 w-auto object-contain"
+                priority
+              />
             </Link>
           </div>
         </div>
@@ -69,14 +87,32 @@ export default function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link href="/signin" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
-            Sign In
-          </Link>
-          <Link href="/signup">
-            <Button className="bg-[#5B4CFF] text-white font-medium px-6 py-2 rounded-xl hover:bg-[#4b3ceb] transition-all">
-              Get Started
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              <Avatar>
+                <Avatar.Image src={user.image} alt={user.name || "User Avatar"} />
+                <Avatar.Fallback>{getInitials(user.name)}</Avatar.Fallback>
+              </Avatar>
+              <Button
+                variant="danger"
+                onClick={handleSignOut}
+                className="font-medium px-6 py-2 rounded-2xl transition-all"
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/signin" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
+                Sign In
+              </Link>
+              <Link href="/signup" className="hover:no-underline">
+                <Button className="bg-[#5B4CFF] text-white font-medium px-6 py-2 rounded-xl hover:bg-[#4b3ceb] transition-all">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </header>
 
@@ -87,9 +123,33 @@ export default function Navbar() {
             <li><Link href="/jobs" className="block py-2 text-white">Browse Jobs</Link></li>
             <li><Link href="#" className="block py-2 text-white">Company</Link></li>
             <li><Link href="#" className="block py-2 text-white">Pricing</Link></li>
+
             <li className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4">
-              <Link href="/signin" className="block py-2 text-white text-center">Sign In</Link>
-              <Button className="w-full bg-[#5B4CFF] text-white rounded-xl">Get Started</Button>
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3 py-2">
+                    <Avatar>
+                      <Avatar.Image src={user.image} alt={user.name || "User Avatar"} />
+                      <Avatar.Fallback>{getInitials(user.name)}</Avatar.Fallback>
+                    </Avatar>
+                    <span className="text-white text-sm font-medium">{user.name}</span>
+                  </div>
+                  <Button
+                    color="danger"
+                    onClick={handleSignOut}
+                    className="w-full rounded-xl"
+                  >
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/signin" className="block py-2 text-white text-center">Sign In</Link>
+                  <Link href="/signup" className="w-full hover:no-underline">
+                    <Button className="w-full bg-[#5B4CFF] text-white rounded-xl">Get Started</Button>
+                  </Link>
+                </>
+              )}
             </li>
           </ul>
         </div>
