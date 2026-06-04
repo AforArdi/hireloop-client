@@ -1,14 +1,29 @@
 "use client";
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+    refetch //refetch the session
+  } = authClient.useSession()
+
+  const user = session?.user;
+
+  const handleSignOut = async()=>{
+    await authClient.signOut();
+  }
+
+  // console.log(user);
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-[#0a0a0a]/90 backdrop-blur-lg border-b border-white/5">
       <header className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
-        
+
         {/* Mobile Menu Button & Logo */}
         <div className="flex items-center gap-4">
           <button
@@ -36,7 +51,7 @@ export default function Navbar() {
         {/* Desktop Navigation Links */}
         <ul className="hidden items-center gap-8 md:flex">
           <li>
-            <Link href="#" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
+            <Link href="/jobs" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
               Browse Jobs
             </Link>
           </li>
@@ -54,12 +69,14 @@ export default function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link href="#" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
+          <Link href="/signin" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
             Sign In
           </Link>
-          <Button className="bg-[#5B4CFF] text-white font-medium px-6 py-2 rounded-xl hover:bg-[#4b3ceb] transition-all">
-            Get Started
-          </Button>
+          <Link href="/signup">
+            <Button className="bg-[#5B4CFF] text-white font-medium px-6 py-2 rounded-xl hover:bg-[#4b3ceb] transition-all">
+              Get Started
+            </Button>
+          </Link>
         </div>
       </header>
 
@@ -67,11 +84,11 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="border-t border-white/10 md:hidden bg-[#0a0a0a]">
           <ul className="flex flex-col gap-2 p-4">
-            <li><Link href="#" className="block py-2 text-white">Browse Jobs</Link></li>
+            <li><Link href="/jobs" className="block py-2 text-white">Browse Jobs</Link></li>
             <li><Link href="#" className="block py-2 text-white">Company</Link></li>
             <li><Link href="#" className="block py-2 text-white">Pricing</Link></li>
             <li className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4">
-              <Link href="#" className="block py-2 text-white text-center">Sign In</Link>
+              <Link href="/signin" className="block py-2 text-white text-center">Sign In</Link>
               <Button className="w-full bg-[#5B4CFF] text-white rounded-xl">Get Started</Button>
             </li>
           </ul>
