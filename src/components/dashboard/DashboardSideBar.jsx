@@ -1,13 +1,15 @@
 "use client";
 
 import { Drawer, Button, Avatar, Chip } from "@heroui/react";
-import { Bars, Magnifier, Bell, Envelope, Person, Gear, House, LayoutTabs, Briefcase, LayoutList } from "@gravity-ui/icons";
+import { Bars, Magnifier, Bell, Envelope, Person, Gear, House, LayoutTabs, Briefcase, LayoutList, CirclePlus } from "@gravity-ui/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
     { icon: LayoutTabs, label: "Dashboard", href: "/dashboard/recruiter" },
     { icon: House, label: "My Company", href: "/dashboard/recruiter/company" },
+    { icon: Person, label: "Company Profile", href: "/dashboard/recruiter/company/profile" },
+    { icon: CirclePlus, label: "Create Job", href: "/dashboard/recruiter/jobs/new" },
     { icon: Briefcase, label: "Manage Jobs", href: "/dashboard/recruiter/jobs" },
     { icon: LayoutList, label: "Applications", href: "/dashboard/recruiter/applications" },
     { icon: Gear, label: "Settings", href: "/dashboard/recruiter/settings" },

@@ -73,7 +73,9 @@ const AddJob = () => {
 
         // Cast expected boolean values
         data.isRemote = isRemote;
-        data.status = true; // Set active status as a boolean
+        data.status = true; // TODO Set active status as a boolean
+        data.companyId = '123'; // TODO Dummy company ID to be made dynamic later
+        data.isPubliclyVisible = true; // TODO Jobs are publicly visible by default when created
 
         if (isRemote) {
             data.location = "Remote";
