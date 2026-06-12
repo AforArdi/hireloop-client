@@ -18,14 +18,8 @@ export const serverMutation = async (path, data) => {
     return res.json()
 }
 
-export const serverQuery = async (path, data) => {
-    const res = await fetch(`${baseUrl}/api/${path}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    })
+export const serverFetch = async (path) => {
+    const res = await fetch(`${baseUrl}/api/${path}`)
     // handle error
     if (!res.ok) {
         const errorData = await res.json()

@@ -6,6 +6,7 @@ export const createCompany = async (newCompanyData) => {
     return serverMutation('companies', newCompanyData)
 }
 
+// ImageBB
 export const handleImagebbUpload = async (formData) => {
     try {
         const apiKey = process.env.IMAGE_BB_API;

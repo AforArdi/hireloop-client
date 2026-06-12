@@ -46,7 +46,7 @@ const FormTextarea = ({ name, label, placeholder, isRequired = true }) => (
     </TextField>
 );
 
-const AddJob = () => {
+const PostJobForm = () => {
     const router = useRouter();
     const [isRemote, setIsRemote] = useState(false);
 
@@ -258,4 +258,4 @@ const AddJob = () => {
     );
 };
 
-export default AddJob;
+export default PostJobForm;
