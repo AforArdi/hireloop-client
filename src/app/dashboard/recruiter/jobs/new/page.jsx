@@ -4,6 +4,7 @@ import { Form, Fieldset, TextField, Select, ListBox, Button, Switch, Label, Inpu
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { createJob } from "@/lib/actions/jobs";
 
 // Form Helpers based on HeroUI / React Aria Anatomy
 const FormInput = ({ name, label, placeholder, type = "text", isRequired = true, className = "" }) => (
@@ -91,6 +92,13 @@ const AddJob = () => {
             router.push('/dashboard/recruiter/jobs');
         });
         // console.log('Data to save', data);
+        const res = await createJob(data);
+        if (res?.insertedId) {
+            e.target.reset();
+            setIsRemote(false);
+        } else {
+            toast.error('Failed to post job.');
+        }
     };
 
     return (
