@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import Image from "next/image";
 import { createCompany, handleImagebbUpload } from "@/lib/actions/companies";
 
-const AddCompanyModal = () => {
+const AddCompanyModal = ({ recruiter }) => {
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +30,7 @@ const AddCompanyModal = () => {
 
             // Set default status pending admin approval
             data.status = "Pending";
+            data.recruiterId = recruiter.id;
 
             // Upload image to ImageBB
             if (imageFile) {
@@ -43,7 +44,7 @@ const AddCompanyModal = () => {
 
             // Save to Database
             const dbRes = await createCompany(data);
-            
+
             if (dbRes?.acknowledged) {
                 toast.success("Company registered successfully!", { id: toastId });
                 // Refresh the page to show the new company
