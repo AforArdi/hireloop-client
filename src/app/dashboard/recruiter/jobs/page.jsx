@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Table, Chip, Button } from "@heroui/react";
 import { Eye, Pencil, TrashBin } from "@gravity-ui/icons";
 import { getCompanyJobs } from "@/lib/api/jobs";
+import { getLoggedInRecruiterCompany } from "@/lib/api/companies";
 
 const RecruiterAllJobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -12,9 +13,10 @@ const RecruiterAllJobs = () => {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                // TODO need to add dynamic company id later
-                const companyId = 123;
-                const data = await getCompanyJobs(companyId);
+                const companies = await getLoggedInRecruiterCompany();
+                const company = companies?.length > 0 ? companies[0] : null;
+
+                const data = await getCompanyJobs(company?._id);
                 if (Array.isArray(data)) {
                     setJobs(data);
                 } else {
