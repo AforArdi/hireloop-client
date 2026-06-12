@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 const navItems = [
     { icon: LayoutTabs, label: "Dashboard", href: "/dashboard/recruiter" },
     { icon: House, label: "My Company", href: "/dashboard/recruiter/company" },
-    { icon: Person, label: "Company Profile", href: "/dashboard/recruiter/company/profile" },
+    { icon: Person, label: "Company Profile", href: "/dashboard/recruiter/profile" },
     { icon: CirclePlus, label: "Create Job", href: "/dashboard/recruiter/jobs/new" },
     { icon: Briefcase, label: "Manage Jobs", href: "/dashboard/recruiter/jobs" },
     { icon: LayoutList, label: "Applications", href: "/dashboard/recruiter/applications" },
