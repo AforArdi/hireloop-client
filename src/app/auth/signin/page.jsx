@@ -4,23 +4,29 @@ import { authClient } from "@/lib/auth-client";
 import { Button, Form, Fieldset, TextField, Label, Input, Surface, Description } from "@heroui/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { FaEye } from "@react-icons/all-files/fa/FaEye";
+import { FaEyeSlash } from "@react-icons/all-files/fa/FaEyeSlash";
 
 export default function SignInPage() {
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
     // console.log("Sign In Data:", data);
-    const {email, password} = data;
-    const { data:res, error } = await authClient.signIn.email({
+    const { email, password } = data;
+    const { data: res, error } = await authClient.signIn.email({
       email,
       password,
       callbackURL: "/",
     })
-    if(res){
+    if (res) {
       toast.success("Sign in successful! Redirecting...");
     }
-    if(error){
+    if (error) {
       toast.error(`${error.message}` || "Sign in failed. Please try again.");
     }
   };
@@ -41,9 +47,14 @@ export default function SignInPage() {
                 <Input placeholder="you@example.com" className="bg-[#121215] border-white/10 text-white w-full rounded-lg p-3" />
               </TextField>
 
-              <TextField isRequired name="password" type="password">
+              <TextField isRequired name="password" type={isVisible ? "text" : "password"}>
                 <Label className="text-sm font-medium text-gray-300 mb-1">Password</Label>
-                <Input placeholder="••••••••" className="bg-[#121215] border-white/10 text-white w-full rounded-lg p-3" />
+                <div className="relative">
+                  <Input placeholder="••••••••" className="bg-[#121215] border-white/10 text-white w-full rounded-lg p-3 pr-10" />
+                  <button type="button" onClick={toggleVisibility} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white flex items-center justify-center">
+                    {isVisible ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                  </button>
+                </div>
               </TextField>
             </Fieldset.Group>
 
@@ -55,7 +66,7 @@ export default function SignInPage() {
           </Fieldset>
         </Form>
         <p className="text-center pb-8 text-sm text-gray-400">
-          Don't have an account? <Link href="/signup" className="text-[#5B4CFF] hover:underline">Sign up</Link>
+          Don't have an account? <Link href="/auth/signup" className="text-[#5B4CFF] hover:underline">Sign up</Link>
         </p>
       </Surface>
     </div>

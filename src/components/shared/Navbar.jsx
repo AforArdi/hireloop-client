@@ -22,7 +22,7 @@ export default function Navbar() {
   const handleSignOut = async () => {
     await authClient.signOut();
     toast.error("You've been signed out.");
-    router.push("/signin");
+    router.push("/auth/signin");
   };
 
   // Helper function to get initials for the Avatar Fallback
@@ -103,10 +103,10 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/signin" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
+              <Link href="/auth/signin" className="text-sm font-medium text-white hover:text-blue-400 transition-colors">
                 Sign In
               </Link>
-              <Link href="/signup" className="hover:no-underline">
+              <Link href="/auth/signup" className="hover:no-underline">
                 <Button className="bg-[#5B4CFF] text-white font-medium px-6 py-2 rounded-xl hover:bg-[#4b3ceb] transition-all">
                   Get Started
                 </Button>
@@ -144,8 +144,8 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link href="/signin" className="block py-2 text-white text-center">Sign In</Link>
-                  <Link href="/signup" className="w-full hover:no-underline">
+                  <Link href="/auth/signin" className="block py-2 text-white text-center">Sign In</Link>
+                  <Link href="/auth/signup" className="w-full hover:no-underline">
                     <Button className="w-full bg-[#5B4CFF] text-white rounded-xl">Get Started</Button>
                   </Link>
                 </>
